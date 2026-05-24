@@ -36,7 +36,7 @@ You only need a modern web browser and a code editor (like VS Code).
 
 Step-by-Step Guide / ขั้นตอนการติดตั้ง
 Clone the repository / คลอนรีโพสิทอรี: 
-git clone [https://github.com/Herushop/Herushop.github.io-th.git](https://github.com/Herushop/Herushop.github.io-th.git)
+git clone [https://github.com/Herushop/Herushop.github.io-th.git](https://github.com/4147s/herushop.github.io-th.git)
 cd Herushop.github.io-th
 Run via Local Server / รันผ่านเซิร์ฟเวอร์จำลอง:
 To prevent CORS issues when loading local JavaScript modules, it is highly recommended to use an extension like Live Server in VS Code, or run using Python:
