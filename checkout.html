@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - Herushop</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <div class="logo">Herushop 🇹🇭</div>
+        <div class="lang-switch">
+            <button onclick="switchLang('en')">EN</button>
+            <button onclick="switchLang('th')">TH</button>
+        </div>
+    </header>
+
+    <main class="checkout-wrapper">
+        <section class="checkout-form-container">
+            <h2 class="lang-en">Shipping & Billing Logistics</h2>
+            <h2 class="lang-th">การจัดส่งและโลจิสติกส์การเรียกเก็บเงิน</h2>
+            
+            <form id="checkoutProcessingForm" onsubmit="executeOrder(event)">
+                <label class="lang-en">Full Name</label><label class="lang-th">ชื่อ-นามสกุล</label>
+                <input type="text" required placeholder="John Doe / นายสมชาย ใจดี">
+
+                <label class="lang-en">Shipping Address in Thailand</label><label class="lang-th">ที่อยู่จัดส่งในประเทศไทย</label>
+                <textarea required placeholder="Sukhumvit Road, Bangkok / ถนนสุขุมวิท กรุงเทพมหานคร" rows="4"></textarea>
+
+                <label class="lang-en">Postal Code</label><label class="lang-th">รหัสไปรษณีย์</label>
+                <input type="text" pattern="[0-9]{5}" required placeholder="10110">
+
+                <label class="lang-en">Payment Framework</label><label class="lang-th">กรอบการชำระเงิน</label>
+                <select id="paymentMethod" class="input-select">
+                    <option value="promptpay">PromptPay / พรอมต์เพย์ (QR Code)</option>
+                    <option value="cod">Cash on Delivery / บริการเก็บเงินปลายทาง (COD)</option>
+                    <option value="bank">Direct Thai Bank Transfer / โอนเงินผ่านธนาคารโดยตรง</option>
+                </select>
+
+                <button type="submit" class="submit-order-btn">
+                    <span class="lang-en">Place Final Order</span>
+                    <span class="lang-th">ยืนยันการสั่งซื้อขั้นสุดท้าย</span>
+                </button>
+            </form>
+        </section>
+    </main>
+
+    <script src="js/main.js"></script>
+    <script>
+        function executeOrder(e) {
+            e.preventDefault();
+            const currentLang = localStorage.getItem('preferredLang') || 'th';
+            
+            const msgSuccess = currentLang === 'en' 
+                ? 'Transaction Successful! Thank you for purchasing from Herushop.' 
+                : 'ธุรกรรมเสร็จสิ้น! ขอบคุณสำหรับการสั่งซื้อจาก Herushop';
+
+            alert(msgSuccess);
+            localStorage.removeItem('herushop_cart'); // Flush cart contents after success
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>
