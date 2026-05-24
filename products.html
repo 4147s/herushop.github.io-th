@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Herushop - All Products / สินค้าทั้งหมด</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <div class="logo">Herushop 🇹🇭</div>
+        <nav>
+            <a href="index.html" class="lang-en">Home</a><a href="index.html" class="lang-th">หน้าแรก</a>
+            <a href="products.html" class="lang-en active">Products</a><a href="products.html" class="lang-th active">สินค้า</a>
+            <a href="cart.html" class="lang-en">Cart (<span class="cart-count">0</span>)</a>
+            <a href="cart.html" class="lang-th">ตะกร้าสินค้า (<span class="cart-count">0</span>)</a>
+            <a href="login.html" class="lang-en">Login</a><a href="login.html" class="lang-th">เข้าสู่ระบบ</a>
+        </nav>
+        <div class="lang-switch">
+            <button onclick="switchLang('en')">EN</button>
+            <button onclick="switchLang('th')">TH</button>
+        </div>
+    </header>
+
+    <main class="catalog-container">
+        <aside class="sidebar-filter">
+            <h3 class="lang-en">Filter Categories</h3>
+            <h3 class="lang-th">กรองตามหมวดหมู่</h3>
+            <ul id="categoryFilter">
+                <li onclick="filterCategory('all')"><span class="lang-en">All Products</span><span class="lang-th">สินค้าทั้งหมด</span></li>
+                <li onclick="filterCategory('apparel')"><span class="lang-en">Apparel</span><span class="lang-th">เสื้อผ้าเครื่องแต่งกาย</span></li>
+                <li onclick="filterCategory('electronics')"><span class="lang-en">Electronics</span><span class="lang-th">อุปกรณ์อิเล็กทรอนิกส์</span></li>
+                <li onclick="filterCategory('lifestyle')"><span class="lang-en">Lifestyle</span><span class="lang-th">ไลฟ์สไตล์</span></li>
+            </ul>
+        </aside>
+
+        <section class="products-showcase">
+            <h2 class="lang-en">Our Full Catalog</h2>
+            <h2 class="lang-th">แคตตาล็อกสินค้าของเรา</h2>
+            <div class="products-grid" id="catalogGrid">
+                </div>
+        </section>
+    </main>
+
+    <script src="js/products.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        function renderCatalog(filter = 'all') {
+            const grid = document.getElementById('catalogGrid');
+            grid.innerHTML = '';
+            
+            const currentLang = localStorage.getItem('preferredLang') || 'th';
+            
+            const filteredProducts = filter === 'all' 
+                ? productDatabase 
+                : productDatabase.filter(p => p.category === filter);
+
+            filteredProducts.forEach(product => {
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.innerHTML = `
+                    <img src="${product.image}" alt="${product.name_en}" class="product-img">
+                    <div class="product-info">
+                        <h4 class="lang-en">${product.name_en}</h4>
+                        <h4 class="lang-th">${product.name_th}</h4>
+                        <p class="product-price">฿${product.price.toLocaleString()}</p>
+                        <p class="product-desc lang-en">${product.description_en}</p>
+                        <p class="product-desc lang-th">${product.description_th}</p>
+                        <button onclick="addToCart('${product.id}')" class="add-to-cart-btn">
+                            <span class="lang-en">Add to Cart</span>
+                            <span class="lang-th">เพิ่มในตะกร้า</span>
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+            applyLanguage(currentLang);
+        }
+
+        function filterCategory(cat) {
+            renderCatalog(cat);
+        }
+
+        function addToCart(id) {
+            let cart = JSON.parse(localStorage.getItem('herushop_cart')) || [];
+            const existing = cart.find(item => item.id === id);
+            if (existing) {
+                existing.quantity += 1;
+            } else {
+                cart.push({ id: id, quantity: 1 });
+            }
+            localStorage.setItem('herushop_cart', JSON.stringify(cart));
+            updateCartBadge();
+            alert(localStorage.getItem('preferredLang') === 'en' ? 'Item added to cart!' : 'เพิ่มสินค้าลงในตะกร้าเรียบร้อยแล้ว!');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCatalog('all');
+        });
+    </script>
+</body>
+  </html>
